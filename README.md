@@ -1,66 +1,95 @@
-# 🤖 QA AI Tool — Free AI-Powered QA Automation Assistant
+<div align="center">
 
-[![Gemini Free](https://img.shields.io/badge/AI-Google%20Gemini%20Free-green?style=flat-square&logo=google)](https://aistudio.google.com)
-[![No Install](https://img.shields.io/badge/Setup-No%20Install%20Required-blue?style=flat-square)](https://github.com/vanichalla24/qa-ai-tool)
-[![HTML](https://img.shields.io/badge/Built%20With-HTML%20%2B%20JS-orange?style=flat-square)](https://github.com/vanichalla24/qa-ai-tool)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+<img src="https://img.shields.io/badge/AI%20Powered-Google%20Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white"/>
+<img src="https://img.shields.io/badge/Cost-100%25%20FREE-10b981?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/No%20Install-Open%20%26%20Use-f59e0b?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/License-MIT-8b5cf6?style=for-the-badge"/>
 
-> An intelligent QA engineering assistant that generates Playwright tests, Appium scripts, BDD scenarios, RCA documents, Jenkins pipelines and more — completely **free** using Google Gemini AI.
+# 🤖 QA AI Tool
 
----
+### Free AI-Powered QA Automation Assistant
 
-## ✨ Features — 14 AI-Powered Tools
+**Generate Playwright tests · Appium scripts · BDD · RCA · Jenkins pipelines**
+**— all powered by Google Gemini, completely free**
 
-| # | Feature | What It Does |
-|---|---------|-------------|
-| 1 | **Generate Test Cases** | From JIRA/requirement → complete Playwright/Appium TypeScript spec |
-| 2 | **Generate Page Object** | Page name → full 3-layer POM class (locators only, strict rule) |
-| 3 | **XPath / Locator Generator** | Element description → 5 selector strategies ranked by stability |
-| 4 | **API Test Generation** | Endpoint → positive, negative, auth failure, schema validation tests |
-| 5 | **Test Data Generator** | Schema → 20+ records in TypeScript array + JSON + CSV |
-| 6 | **Analyze Test Failure** | Paste error log → root cause + confidence % + exact fix |
-| 7 | **RCA Document** | Incident description → professional Root Cause Analysis document |
-| 8 | **Self-Healing Locator** | Broken selector → 5 stable alternatives + helper function |
-| 9 | **BDD / Gherkin** | Feature name → complete .feature file + TypeScript step definitions |
-| 10 | **Jenkins Pipeline** | Stack + environments → full Jenkinsfile with Allure + Slack |
-| 11 | **Framework Optimizer** | Your code → structural improvements + maintainability score |
-| 12 | **Script Reviewer** | Paste test → score 1-10 per category + fully corrected version |
-| 13 | **SQL Query Generator** | Requirement → SELECT, INSERT, DELETE, JOIN test queries |
-| 14 | **Interview Answer** | Question → Director-level power answer with your experience |
+[🌐 Live Demo](https://vanichalla24.github.io/Complete_Playwright_project) · [📖 Setup Guide](docs/SETUP.md) · [📋 All Features](docs/USAGE.md)
+
+</div>
 
 ---
 
-## 🚀 Quick Start — 3 Steps
+## 📌 What Is This?
 
-### Step 1 — Get Free Gemini API Key (2 minutes)
+A single HTML file that acts as your personal AI co-pilot for QA automation.
+Open it in any browser, connect a free Google Gemini API key, and get instant AI-generated:
 
+- ✅ Complete Playwright & Appium TypeScript test files
+- ✅ Page Object classes following strict 3-layer architecture
+- ✅ Root cause analysis from error logs
+- ✅ Professional RCA documents
+- ✅ BDD Gherkin feature files + step definitions
+- ✅ Jenkins CI/CD pipeline scripts
+- ✅ Director-level interview answers
+
+**No installation. No Node.js. No build step. Just open and use.**
+
+---
+
+## ⚡ Quick Start
+
+### Step 1 — Get Free API Key (2 minutes)
 ```
 1. Open → https://aistudio.google.com/app/apikey
-2. Sign in with your Gmail account (free)
+2. Sign in with Gmail
 3. Click "Create API Key"
 4. Copy the key (starts with AIzaSy...)
 ```
 
-> ✅ No credit card. No billing. 60 requests/minute free tier.
-
 ### Step 2 — Open the Tool
-
 ```bash
-# Option A — Direct open (simplest)
-# Just double-click index.html in your file explorer
-
-# Option B — Local server (recommended for best experience)
+# Just double-click index.html
+# OR serve locally:
 npx serve .
-# Then open: http://localhost:3000
 ```
 
-### Step 3 — Connect Your Key
+### Step 3 — Connect & Use
+```
+Sidebar → API Setup → Paste key → Test & Save → ✅ All 14 features active
+```
+
+---
+
+## 🧰 14 Features
+
+| # | Feature | Input → Output |
+|---|---------|----------------|
+| 1 | **Test Case Generator** | Requirement → Full Playwright/Appium spec file |
+| 2 | **Page Object Generator** | Page name → 3-layer POM TypeScript class |
+| 3 | **XPath / Locator Generator** | Element → 5 strategies ranked by stability |
+| 4 | **API Test Generator** | Endpoint → 5 tests (success, error, auth, schema) |
+| 5 | **Test Data Generator** | Schema → TypeScript array + JSON + CSV |
+| 6 | **Failure Analyzer** | Error log → Root cause + fix code |
+| 7 | **RCA Document** | Incident → Professional Director-level RCA |
+| 8 | **Self-Healing Locator** | Broken selector → 5 stable alternatives |
+| 9 | **BDD / Gherkin** | Feature → .feature file + step definitions |
+| 10 | **Jenkins Pipeline** | Stack → Full Jenkinsfile + Allure + Slack |
+| 11 | **Framework Optimizer** | Your code → Improvements + score /10 |
+| 12 | **Script Reviewer** | Paste test → Score per category + fixed version |
+| 13 | **SQL Query Generator** | Requirement → SELECT + INSERT + DELETE + JOIN |
+| 14 | **Interview Answer** | Question → Director-level power answer |
+
+---
+
+## 🏗️ 3-Layer Architecture (Enforced in All Output)
+
+Every generated test follows the strict 3-layer POM rule:
 
 ```
-1. Click "API Setup" in the left sidebar
-2. Paste your AIzaSy... key
-3. Click "Test & Save"
-4. ✅ Green tick = all 14 features active!
+LAYER 3 — TESTS       → describe/it + assertions only
+              ↓ uses
+LAYER 2 — MODULES     → click, fill, navigate (no locators)
+              ↓ uses
+LAYER 1 — PAGES       → locator getters only (no actions, no await)
 ```
 
 ---
@@ -68,191 +97,77 @@ npx serve .
 ## 📁 Project Structure
 
 ```
-qa-ai-tool/
+Complete_Playwright_project/
 │
-├── index.html              ← Main application (single file, no build needed)
+├── index.html              ← Full application (single file, 43KB)
 │
 ├── docs/
-│   ├── SETUP.md            ← Detailed setup guide
-│   ├── FEATURES.md         ← Feature descriptions and prompts
-│   └── USAGE.md            ← How to use each feature
+│   ├── SETUP.md            ← API key setup + troubleshooting
+│   └── USAGE.md            ← How to use all 14 features
 │
-├── screenshots/            ← App screenshots for documentation
+├── screenshots/            ← App screenshots
 │
-├── .github/
-│   └── workflows/
-│       └── deploy.yml      ← GitHub Pages auto-deploy workflow
-│
-├── .gitignore
-├── LICENSE
-├── CONTRIBUTING.md
-└── README.md
+├── README.md               ← This file
+├── CONTRIBUTING.md         ← How to contribute
+├── LICENSE                 ← MIT
+└── .gitignore
 ```
 
 ---
 
-## 🎯 How to Use for Playwright Projects
+## 🛠️ Supported Frameworks
 
-### Generate a Test Case
-1. Click **"Generate test cases"** in sidebar
-2. Paste your requirement: `"User should login with valid credentials and see dashboard"`
-3. Select framework: `Playwright + TypeScript`
-4. Click **Generate with Gemini**
-5. Copy output → paste to `src/tests/login.spec.ts`
-6. Run: `npx playwright test`
-
-### Generate a Page Object
-1. Click **"Generate page object"**
-2. Enter page name: `Login Page`
-3. Enter elements: `username input, password input, login button, error message`
-4. Click **Generate**
-5. Copy output → paste to `src/pages/LoginPage.ts`
-
-### Analyze a Failing Test
-1. Click **"Analyze test failure"**
-2. Paste your error log or stack trace
-3. Click **Generate**
-4. Get: root cause + confidence % + exact fix code
+| Framework | Use Case |
+|-----------|----------|
+| Playwright + TypeScript | Web E2E automation |
+| Appium + WebDriverIO + TypeScript | Android & iOS mobile |
+| Selenium + Java + TestNG | Legacy web automation |
+| BDD / Cucumber | Behavior-driven development |
+| Jenkins / GitHub Actions | CI/CD pipelines |
 
 ---
 
-## 🏗️ 3-Layer Architecture (Enforced in All Generated Code)
+## 🔒 Privacy & Security
 
-All generated code follows the strict 3-layer POM rule:
-
-```
-┌─────────────────────────────────────────────────┐
-│  LAYER 3 — TESTS (spec files)                   │
-│  ✅ describe/it blocks + assertions only        │
-│  ❌ Never imports Page classes directly         │
-└────────────────────┬────────────────────────────┘
-                     │ uses
-┌────────────────────▼────────────────────────────┐
-│  LAYER 2 — MODULES (business logic)             │
-│  ✅ Actions: click, fill, navigate              │
-│  ❌ Never defines locators                      │
-└────────────────────┬────────────────────────────┘
-                     │ uses
-┌────────────────────▼────────────────────────────┐
-│  LAYER 1 — PAGES (locators only)                │
-│  ✅ Only getter properties returning locators   │
-│  ❌ No actions, no assertions, no await         │
-└─────────────────────────────────────────────────┘
-```
-
----
-
-## 🤖 AI Provider
-
-| Provider | Cost | Model | Requests |
-|----------|------|-------|----------|
-| **Google Gemini** (default) | **FREE** | gemini-1.5-flash-latest | 60/min |
-
-Your API key is stored **only in your browser's localStorage** — never sent anywhere except Google's official API endpoint.
-
----
-
-## 🖥️ Supported Frameworks
-
-The tool generates code for:
-
-- **Playwright + TypeScript** — Web E2E automation
-- **Appium + WebDriverIO + TypeScript** — Android/iOS mobile automation
-- **Selenium + Java + TestNG** — Legacy web automation
-- **API Testing** — REST endpoint validation
-- **BDD / Cucumber** — Behavior-driven development
-- **Jenkins / GitHub Actions** — CI/CD pipelines
-
----
-
-## 📸 Screenshots
-
-| Dashboard | Generate | AI Chat |
-|-----------|----------|---------|
-| 14 feature cards | Code generation | QA Q&A |
-
----
-
-## 🔧 Local Development
-
-```bash
-# Clone the repo
-git clone https://github.com/vanichalla24/qa-ai-tool.git
-cd qa-ai-tool
-
-# Open directly (no build needed)
-open index.html
-
-# Or serve with npx
-npx serve .
-
-# Or use Python
-python3 -m http.server 8080
-```
-
----
-
-## 🌐 Deploy to GitHub Pages
-
-The repo includes a GitHub Actions workflow that auto-deploys to GitHub Pages on every push to `main`.
-
-**Manual deploy:**
-```
-Repository Settings → Pages → Source → Deploy from branch → main → / (root)
-```
-
-**Your tool will be live at:**
-```
-https://vanichalla24.github.io/qa-ai-tool
-```
-
----
-
-## 📖 Interview Features
-
-The **Interview Answer Generator** is tailored for QA Architect/Director level interviews. It generates power answers using:
-
-- Your specific Samsung SRIB experience
-- 13 consecutive Galaxy flagship releases
-- Zero S1 defect escapes track record
-- Dual Best Awards (Galaxy S25 + S26)
-- 12-member team leadership
-- AI-powered QA tooling expertise
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-Ideas for new features:
-- [ ] Cypress test generator
-- [ ] Visual regression test generator
-- [ ] Performance test script generator
-- [ ] Docker compose generator for test infrastructure
-- [ ] Allure report analyzer
-
----
-
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE)
+- Your Gemini API key is stored **only in your browser's localStorage**
+- No server, no backend — all API calls go directly to `generativelanguage.googleapis.com`
+- Nothing is stored or logged anywhere
+- Remove your key anytime from the **API Setup** page
 
 ---
 
 ## 👩‍💻 Author
 
-**Vaani Challa**
-- QA Architect & Technical Manager — Samsung R&D Institute India (SRIB)
-- 17+ years in QA automation — Android, iOS, Web
-- Galaxy S22 → S26 camera quality lead — zero S1 escapes across 13 releases
-- Dual Samsung Best Award winner (Galaxy S25 + S26)
-- GitHub: [@vanichalla24](https://github.com/vanichalla24)
+**Vaani Challa** — QA Architect & Technical Manager
+
+| | |
+|---|---|
+| 🏢 Company | Samsung R&D Institute India (SRIB), Bangalore |
+| ⏱️ Experience | 17+ years in QA Automation |
+| 📱 Domain | Android · iOS · Camera · Galaxy Flagship Programs |
+| 🏆 Awards | Dual Best Award — Galaxy S25 & S26 Camera Quality |
+| 🚀 Track record | 13 consecutive flagship releases · Zero S1 defect escapes |
+| 🔧 Stack | Playwright · Appium · LangGraph · Python · TypeScript |
+| 🐙 GitHub | [@vanichalla24](https://github.com/vanichalla24) |
 
 ---
 
-## ⭐ If this tool helps you, please star the repo!
+## 🤝 Contributing
 
-```
-https://github.com/vanichalla24/qa-ai-tool
-```
+Found a bug or have a feature idea? See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+---
+
+## 📄 License
+
+MIT © [Vaani Challa](https://github.com/vanichalla24)
+
+---
+
+<div align="center">
+
+**If this tool saves you time, please ⭐ star the repo!**
+
+`github.com/vanichalla24/Complete_Playwright_project`
+
+</div>
