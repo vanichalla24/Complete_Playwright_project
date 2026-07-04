@@ -33,3 +33,4 @@ playwright-report/
 allure-results/
 allure-report/
 screenshots/failures/
+.github/
