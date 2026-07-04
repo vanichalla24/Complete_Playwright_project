@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QA AI Tool — Free (Gemini)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;--bg2:#1e293b;--bg3:#263548;--bg4:#334155;
+  --cyan:#06b6d4;--green:#10b981;--orange:#f59e0b;--red:#ef4444;--purple:#8b5cf6;
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+  --bd:#334155;--bd2:#475569;--r:8px;
+  --mono:'Courier New',monospace;
+}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--t1);font-size:13px;min-height:100vh}
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sb{width:195px;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sb-logo{padding:14px;border-bottom:1px solid var(--bd)}
+.sb-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.sb-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center}
+.sb-title{font-size:13px;font-weight:700}
+.sb-sub{font-size:10px;color:var(--t3)}
+.sb-sec{font-size:9px;font-weight:700;color:var(--t3);padding:10px 12px 3px;text-transform:uppercase;letter-spacing:.8px}
+.sb-item{display:flex;align-items:center;gap:7px;padding:7px 12px;cursor:pointer;font-size:11px;color:var(--t2);border-left:2px solid transparent;transition:all .12s;white-space:nowrap}
+.sb-item:hover{background:var(--bg3);color:var(--t1)}
+.sb-item.on{background:rgba(6,182,212,.12);color:var(--cyan);border-left-color:var(--cyan)}
+.sb-item i{font-size:14px;width:15px;text-align:center;flex-shrink:0}
+.sb-div{height:1px;background:var(--bd);margin:4px 12px}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:9px 16px;border-bottom:1px solid var(--bd);background:var(--bg2);display:flex;align-items:center;gap:8px}
+.tbadge{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600}
+.tbadge-blue{background:rgba(6,182,212,.15);color:var(--cyan)}
+.tbadge-green{background:rgba(16,185,129,.15);color:var(--green)}
+.tbadge-red{background:rgba(239,68,68,.15);color:var(--red)}
+.content{flex:1;overflow-y:auto;padding:16px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+
+/* SETUP CARD */
+.setup-big{background:var(--bg2);border:1px solid rgba(6,182,212,.5);border-radius:12px;padding:20px;margin-bottom:16px}
+.setup-big h2{font-size:15px;font-weight:700;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.setup-big p{font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.7}
+.steps-box{background:var(--bg);border-radius:8px;padding:14px;font-size:12px;color:var(--t2);line-height:2;margin-bottom:14px}
+.steps-box a{color:var(--cyan);font-weight:600}
+.step-n{background:var(--cyan);color:#0f172a;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-right:7px}
+.api-row{display:flex;gap:8px}
+.api-row input{flex:1;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:9px 12px;color:var(--t1);font-size:13px;font-family:var(--mono)}
+.api-row input:focus{outline:none;border-color:var(--cyan)}
+.test-row{display:flex;gap:8px;margin-top:8px;align-items:center}
+.test-result{font-size:11px;padding:5px 10px;border-radius:5px;font-weight:500}
+.test-ok{background:rgba(16,185,129,.15);color:var(--green)}
+.test-fail{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:11px}
+.stat-n{font-size:22px;font-weight:700;color:var(--cyan)}
+.stat-l{font-size:10px;color:var(--t3);margin-top:2px}
+
+/* FEAT GRID */
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:14px}
+.fc{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:11px;cursor:pointer;transition:all .12s}
+.fc:hover{border-color:var(--cyan);background:rgba(6,182,212,.06)}
+.fc.on{border-color:var(--cyan);background:rgba(6,182,212,.1)}
+.fc i{font-size:20px;margin-bottom:7px;display:block}
+.fc h4{font-size:11px;font-weight:700;color:var(--t1);line-height:1.3}
+.fc p{font-size:10px;color:var(--t3);margin-top:2px}
+
+/* PANEL */
+.panel{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.ph{padding:11px 14px;border-bottom:1px solid var(--bd);background:var(--bg);display:flex;align-items:center;gap:9px}
+.ph h3{font-size:13px;font-weight:700;flex:1}
+.pb{padding:14px}
+
+/* FORM */
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.ig.s1{grid-template-columns:1fr}
+.if{display:flex;flex-direction:column;gap:4px}
+.if.full{grid-column:1/-1}
+.if label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
+.if input,.if select,.if textarea{background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:8px 10px;color:var(--t1);font-size:12px;font-family:inherit;transition:border .12s}
+.if input:focus,.if select:focus,.if textarea:focus{outline:none;border-color:var(--cyan)}
+.if textarea{height:80px;resize:vertical;font-family:var(--mono);font-size:11px}
+.if select option{background:var(--bg)}
+
+/* BTNS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .12s;font-family:inherit}
+.btn-c{background:var(--cyan);color:#0f172a}
+.btn-c:hover{background:#22d3ee}
+.btn-c:disabled{opacity:.6;cursor:not-allowed}
+.btn-g{background:transparent;border:1px solid var(--bd2);color:var(--t2)}
+.btn-g:hover{background:var(--bg3);color:var(--t1)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#059669}
+.btn-sm{padding:5px 9px;font-size:11px}
+.btn-xs{padding:4px 8px;font-size:10px}
+
+/* OUTPUT */
+.out-sec{margin-top:12px}
+.out-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.out-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:5px}
+.out-lbl .dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.code{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:13px;font-family:var(--mono);font-size:11px;line-height:1.7;color:#e6edf3;max-height:430px;overflow-y:auto;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+
+/* CHAT */
+.chat-box{display:flex;flex-direction:column;height:440px}
+.chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
+.bubble{max-width:92%;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.6}
+.bubble.u{align-self:flex-end;background:var(--cyan);color:#0f172a;border-radius:12px 12px 3px 12px;font-weight:500}
+.bubble.a{align-self:flex-start;background:var(--bg3);color:var(--t1);border:1px solid var(--bd);border-radius:12px 12px 12px 3px;font-family:var(--mono);font-size:11px;white-space:pre-wrap;max-width:97%}
+.chat-ft{padding:10px;border-top:1px solid var(--bd);display:flex;gap:7px;align-items:flex-end}
+.chat-ft textarea{flex:1;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:8px 11px;color:var(--t1);font-size:12px;resize:none;height:38px;font-family:inherit}
+.chat-ft textarea:focus{outline:none;border-color:var(--cyan)}
+.qrow{display:flex;gap:5px;padding:0 12px 8px;flex-wrap:wrap}
+.qbtn{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:4px 9px;font-size:10px;color:var(--t2);cursor:pointer;transition:all .12s}
+.qbtn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* SPINNER / PULSE */
+.spin{width:15px;height:15px;border:2px solid var(--bd2);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pulse{display:inline-flex;gap:4px}
+.pulse span{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:p 1.2s ease infinite}
+.pulse span:nth-child(2){animation-delay:.2s}
+.pulse span:nth-child(3){animation-delay:.4s}
+@keyframes p{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.ld{display:flex;align-items:center;justify-content:center;gap:10px;padding:28px;color:var(--t3);font-size:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:16px;right:16px;background:var(--green);color:#fff;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px;z-index:9999;animation:su .3s ease}
+@keyframes su{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* RECENT */
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.ri{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:9px 11px}
+.ri-t{font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px}
+.ri-s{font-size:10px;color:var(--t3);margin-top:3px}
+.gdot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-row">
+      <div class="sb-icon"><i class="ti ti-robot" style="color:#fff;font-size:16px"></i></div>
+      <div><div class="sb-title">QA AI Tool</div><div class="sb-sub">Free — Google Gemini</div></div>
+    </div>
+  </div>
+  <div class="sb-sec">Main</div>
+  <div class="sb-item on" id="nav-dashboard" onclick="goTo('dashboard')"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+  <div class="sb-item" id="nav-gen"       onclick="goTo('gen')"><i class="ti ti-sparkles"></i>AI Generate</div>
+  <div class="sb-item" id="nav-chat"      onclick="goTo('chat')"><i class="ti ti-message-dots"></i>AI Chat</div>
+  <div class="sb-item" id="nav-setup"     onclick="goTo('setup')"><i class="ti ti-key"></i>API Setup</div>
+  <div class="sb-div"></div>
+  <div class="sb-sec">Quick Generate</div>
+  <div class="sb-item" onclick="pick('testcase')"><i class="ti ti-clipboard-list"></i>Test cases</div>
+  <div class="sb-item" onclick="pick('pageobj')"><i class="ti ti-layout-2"></i>Page object</div>
+  <div class="sb-item" onclick="pick('xpath')"><i class="ti ti-code"></i>XPath / Locator</div>
+  <div class="sb-item" onclick="pick('apitest')"><i class="ti ti-api"></i>API tests</div>
+  <div class="sb-item" onclick="pick('bdd')"><i class="ti ti-align-left"></i>BDD / Gherkin</div>
+  <div class="sb-item" onclick="pick('buganalyze')"><i class="ti ti-bug"></i>Analyze failure</div>
+  <div class="sb-item" onclick="pick('rca')"><i class="ti ti-microscope"></i>RCA document</div>
+  <div class="sb-item" onclick="pick('selfheal')"><i class="ti ti-refresh"></i>Self-heal locator</div>
+  <div class="sb-item" onclick="pick('jenkins')"><i class="ti ti-git-branch"></i>Jenkins pipeline</div>
+  <div class="sb-item" onclick="pick('reviewer')"><i class="ti ti-eye"></i>Script reviewer</div>
+  <div class="sb-item" onclick="pick('interview')"><i class="ti ti-school"></i>Interview answer</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <span style="font-size:11px;color:var(--t3)">QA AI Assistant</span>
+    <span class="tbadge tbadge-blue">Playwright</span>
+    <span class="tbadge tbadge-blue">Appium</span>
+    <span class="tbadge" id="status-badge" style="background:rgba(239,68,68,.15);color:var(--red)">No key — click API Setup</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:5px">
+      <i class="ti ti-brand-google" style="color:var(--green);font-size:14px"></i>
+      <span style="font-size:11px;color:var(--green);font-weight:700">Gemini Free</span>
+    </div>
+  </div>
+
+  <div class="content" id="content">
+
+    <!-- DASHBOARD -->
+    <div id="v-dashboard">
+      <div class="stats">
+        <div class="stat"><div class="stat-n">14</div><div class="stat-l">AI Features</div></div>
+        <div class="stat"><div class="stat-n">Free</div><div class="stat-l">No credit card</div></div>
+        <div class="stat"><div class="stat-n">3-Layer</div><div class="stat-l">POM enforced</div></div>
+        <div class="stat"><div class="stat-n">13</div><div class="stat-l">Release wins</div></div>
+      </div>
+      <div class="rg">
+        <div class="ri"><div class="ri-t"><span class="gdot"></span>Test case generator</div><div class="ri-s">Playwright + Appium</div></div>
+        <div class="ri"><div class="ri-t"><span class="gdot"></span>Page object builder</div><div class="ri-s">3-layer POM class</div></div>
+        <div class="ri"><div class="ri-t"><span class="gdot"></span>BDD Gherkin writer</div><div class="ri-s">Feature + step defs</div></div>
+        <div class="ri"><div class="ri-t"><span class="gdot"></span>Failure analyzer</div><div class="ri-s">Root cause + fix</div></div>
+        <div class="ri"><div class="ri-t"><span class="gdot"></span>Jenkins pipeline</div><div class="ri-s">Full CI/CD file</div></div>
+        <div class="ri"><div class="ri-t"><span class="gdot"></span>Interview answers</div><div class="ri-s">Director level</div></div>
+      </div>
+      <p style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:8px">All 14 features →</p>
+      <div class="fg" id="feat-grid"></div>
+    </div>
+
+    <!-- GENERATE -->
+    <div id="v-gen" style="display:none">
+      <div id="gen-area">
+        <div style="text-align:center;padding:50px;color:var(--t3)">
+          <i class="ti ti-click" style="font-size:36px;display:block;margin-bottom:10px"></i>
+          <p style="font-size:12px">Pick a feature from the sidebar or dashboard</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div id="v-chat" style="display:none">
+      <div class="panel">
+        <div class="ph">
+          <i class="ti ti-message-dots" style="font-size:17px;color:var(--cyan)"></i>
+          <h3>AI QA Chat</h3>
+          <span class="tbadge tbadge-green">Gemini Free</span>
+        </div>
+        <div class="qrow">
+          <div class="qbtn" onclick="qc('How to fix flaky Playwright tests?')">Fix flaky tests</div>
+          <div class="qbtn" onclick="qc('Explain 3-layer POM with code example')">3-layer POM</div>
+          <div class="qbtn" onclick="qc('Best Playwright locator strategy ranked by stability')">Best locators</div>
+          <div class="qbtn" onclick="qc('How to run Appium tests on multiple devices in parallel?')">Parallel Appium</div>
+          <div class="qbtn" onclick="qc('What is async await and why needed in Appium TypeScript?')">async / await</div>
+          <div class="qbtn" onclick="qc('GitHub Actions CI/CD setup for Playwright TypeScript — full workflow yml')">CI/CD yml</div>
+          <div class="qbtn" onclick="qc('How to handle dynamic elements in Playwright without pause()?')">Dynamic elements</div>
+          <div class="qbtn" onclick="qc('Director level QA interview question: How do you define quality?')">Interview Q</div>
+        </div>
+        <div class="chat-box">
+          <div class="chat-msgs" id="chat-msgs">
+            <div class="bubble a">👋 Hi Vaani! I am your free QA AI — powered by Google Gemini.
+
+I help with:
+• Playwright TypeScript — tests, locators, CI/CD, debugging
+• Appium Android/iOS — UiSelector, XCUITest, gestures, parallel
+• 3-Layer framework architecture — Pages → Modules → Tests
+• Director-level interview prep — power answers with your Samsung data
+• Framework design — from scratch or improve existing
+
+Type any question or use the quick buttons above! ⚡</div>
+          </div>
+          <div class="chat-ft">
+            <textarea id="chat-inp" placeholder="Ask anything — Playwright, Appium, framework design, interview prep..." onkeydown="chatKey(event)"></textarea>
+            <button class="btn btn-c" style="padding:8px 10px" onclick="sendChat()"><i class="ti ti-send"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETUP -->
+    <div id="v-setup" style="display:none">
+      <div class="setup-big">
+        <h2><i class="ti ti-brand-google"></i>Get Free Google Gemini API Key</h2>
+        <p>Google Gemini is completely <strong style="color:var(--green)">FREE</strong> for personal use — no credit card, no billing. 60 requests per minute. Takes 2 minutes to set up.</p>
+
+        <div class="steps-box">
+          <div><span class="step-n">1</span>Open this link → <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a></div>
+          <div><span class="step-n">2</span>Sign in with your <strong style="color:var(--t1)">Gmail account</strong> (free)</div>
+          <div><span class="step-n">3</span>Click the blue <strong style="color:var(--cyan)">"Create API Key"</strong> button</div>
+          <div><span class="step-n">4</span>Select <strong style="color:var(--t1)">"Create API key in new project"</strong></div>
+          <div><span class="step-n">5</span>Copy the key — it starts with <code style="background:var(--bg);padding:1px 5px;border-radius:3px;color:var(--cyan)">AIzaSy...</code></div>
+          <div><span class="step-n">6</span>Paste it below and click <strong style="color:var(--green)">Test & Save</strong></div>
+        </div>
+
+        <div class="api-row">
+          <input type="text" id="key-input" placeholder="AIzaSy..." autocomplete="off" />
+          <button class="btn btn-green" onclick="testAndSave()"><i class="ti ti-plug"></i>Test & Save</button>
+        </div>
+        <div class="test-row">
+          <div id="test-result" style="display:none"></div>
+        </div>
+        <p style="font-size:10px;color:var(--t3);margin-top:10px">🔒 Key is saved only in your browser (localStorage). Never sent anywhere except Google's API directly.</p>
+      </div>
+
+      <div id="key-saved-box" style="display:none;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.4);border-radius:10px;padding:14px;margin-top:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px">✅ Gemini API Connected — All features active!</div>
+        <div style="font-size:11px;color:var(--t2);margin-bottom:10px">Your key: <span id="key-preview" style="font-family:var(--mono);color:var(--cyan)"></span></div>
+        <button class="btn btn-g btn-sm" onclick="removeKey()"><i class="ti ti-trash"></i>Remove key</button>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+</div><!-- end app -->
+
+<script>
+// ════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════
+let KEY = localStorage.getItem('gemini_key') || '';
+let FEAT = null;
+
+// ════════════════════════════════════════════════════
+// FEATURES CONFIG
+// ════════════════════════════════════════════════════
+const FEATS = [
+  {id:'testcase',  i:'ti-clipboard-list', n:'Generate test cases',     d:'From requirement/JIRA', c:'#06b6d4'},
+  {id:'pageobj',   i:'ti-layout-2',       n:'Generate page object',    d:'3-layer POM class',     c:'#8b5cf6'},
+  {id:'xpath',     i:'ti-code',            n:'XPath / Locator gen',     d:'5 selector strategies', c:'#f59e0b'},
+  {id:'apitest',   i:'ti-api',             n:'API test generation',     d:'REST endpoint tests',   c:'#10b981'},
+  {id:'testdata',  i:'ti-database',        n:'Test data generator',     d:'CSV / JSON / TS array', c:'#06b6d4'},
+  {id:'buganalyze',i:'ti-bug',             n:'Analyze test failure',    d:'Root cause + fix',      c:'#ef4444'},
+  {id:'rca',       i:'ti-microscope',      n:'RCA document',            d:'Professional format',   c:'#f59e0b'},
+  {id:'selfheal',  i:'ti-refresh',         n:'Self-heal locator',       d:'Fix broken selectors',  c:'#10b981'},
+  {id:'bdd',       i:'ti-align-left',      n:'BDD / Gherkin',           d:'Feature + step defs',   c:'#8b5cf6'},
+  {id:'jenkins',   i:'ti-git-branch',      n:'Jenkins pipeline',        d:'Full CI/CD file',       c:'#06b6d4'},
+  {id:'framework', i:'ti-building',        n:'Framework optimizer',     d:'Improve structure',     c:'#f59e0b'},
+  {id:'reviewer',  i:'ti-eye',             n:'Script reviewer',         d:'Score + fix your code', c:'#ef4444'},
+  {id:'sql',       i:'ti-database-cog',    n:'SQL query generator',     d:'Test DB queries',       c:'#10b981'},
+  {id:'interview', i:'ti-school',          n:'Interview answer',        d:'Director-level power',  c:'#8b5cf6'},
+];
+
+// ════════════════════════════════════════════════════
+// FORMS HTML
+// ════════════════════════════════════════════════════
+const FORMS = {
+  testcase:`<div class="ig"><div class="if full"><label>Requirement *</label><textarea id="f0" placeholder="e.g. User should login with valid credentials and see dashboard"></textarea></div><div class="if"><label>Framework</label><select id="f1"><option>Playwright + TypeScript</option><option>Appium Android + TypeScript</option><option>Appium iOS + TypeScript</option><option>Selenium + Java + TestNG</option></select></div><div class="if"><label>App type</label><input id="f2" value="Web Application"></div></div>`,
+  pageobj:`<div class="ig"><div class="if"><label>Page name *</label><input id="f0" placeholder="Login Page / Cart Page"></div><div class="if"><label>Framework</label><select id="f1"><option>Playwright TypeScript</option><option>Appium WebDriverIO TypeScript</option><option>Selenium Java</option></select></div><div class="if full"><label>Elements on this page</label><input id="f2" placeholder="username input, password input, login button, error message, forgot password link"></div></div>`,
+  xpath:`<div class="ig"><div class="if"><label>Element description *</label><input id="f0" placeholder="Login button / Username input field"></div><div class="if"><label>Platform</label><select id="f1"><option>Playwright Web</option><option>Appium Android</option><option>Appium iOS</option><option>Selenium Web</option></select></div></div>`,
+  apitest:`<div class="ig"><div class="if"><label>Endpoint *</label><input id="f0" placeholder="POST /api/login"></div><div class="if"><label>Method</label><select id="f1"><option>POST</option><option>GET</option><option>PUT</option><option>DELETE</option><option>PATCH</option></select></div><div class="if"><label>Auth type</label><input id="f2" value="Bearer token"></div><div class="if"><label>Request body</label><input id="f3" placeholder='{"username":"test","password":"pass"}'></div></div>`,
+  testdata:`<div class="ig"><div class="if"><label>Count</label><input id="f0" type="number" value="20"></div><div class="if"><label>Format</label><select id="f1"><option>All (TS + JSON + CSV)</option><option>TypeScript array</option><option>JSON</option><option>CSV</option></select></div><div class="if full"><label>Schema *</label><textarea id="f2" placeholder="user registration: name, email, phone, password, date of birth, address, city, country, role (admin/user/guest)"></textarea></div></div>`,
+  buganalyze:`<div class="ig s1"><div class="if full"><label>Error log / Stack trace *</label><textarea id="f0" style="height:110px" placeholder="Paste your error, stack trace, or test failure output here..."></textarea></div></div>`,
+  rca:`<div class="ig s1"><div class="if full"><label>Incident description *</label><textarea id="f0" placeholder="What failed, when, environment, scope of impact, how it was discovered..."></textarea></div></div>`,
+  selfheal:`<div class="ig"><div class="if"><label>Broken locator *</label><input id="f0" placeholder="//input[@id='username']"></div><div class="if"><label>Page</label><input id="f1" placeholder="Login page"></div><div class="if full"><label>Element description</label><input id="f2" placeholder="Username text input field"></div></div>`,
+  bdd:`<div class="ig"><div class="if"><label>Feature *</label><input id="f0" placeholder="User Login"></div><div class="if"><label>Application</label><input id="f1" value="Web Application"></div><div class="if full"><label>Scenarios to cover</label><input id="f2" placeholder="happy path, invalid credentials, locked account, forgot password, session timeout"></div></div>`,
+  jenkins:`<div class="ig"><div class="if"><label>Project *</label><input id="f0" placeholder="E2E Test Suite"></div><div class="if"><label>Framework</label><input id="f1" value="Playwright + TypeScript"></div><div class="if full"><label>Environments</label><input id="f2" value="dev, staging, production"></div></div>`,
+  framework:`<div class="ig"><div class="if"><label>Tech stack</label><input id="f0" value="Playwright + TypeScript + Appium"></div><div class="if"><label>Main problem</label><input id="f1" placeholder="code duplication / slow tests / no reporting"></div><div class="if full"><label>Current code / structure (optional)</label><textarea id="f2" placeholder="Paste your framework code or structure..."></textarea></div></div>`,
+  reviewer:`<div class="ig s1"><div class="if full"><label>Paste your test script *</label><textarea id="f0" style="height:120px" placeholder="Paste your Playwright / Appium / Selenium test code here for review..."></textarea></div></div>`,
+  sql:`<div class="ig"><div class="if"><label>Requirement *</label><input id="f0" placeholder="Verify user exists after registration"></div><div class="if"><label>Database</label><select id="f1"><option>PostgreSQL</option><option>MySQL</option><option>Oracle</option><option>SQL Server</option></select></div><div class="if"><label>Table</label><input id="f2" placeholder="users"></div><div class="if"><label>Columns</label><input id="f3" placeholder="id, name, email, created_at, status"></div></div>`,
+  interview:`<div class="ig"><div class="if full"><label>Question or topic *</label><input id="f0" placeholder="e.g. How do you define quality? Tell me about a production escape. What is your leadership style?"></div><div class="if"><label>Interview level</label><select id="f1"><option>Director / QA Architect</option><option>Senior QA Lead</option><option>QA Manager</option></select></div><div class="if"><label>Your experience context</label><input id="f2" value="17 years, Samsung SRIB, 12-member team, Galaxy S22-S26, 13 releases zero S1 escapes, Playwright+Appium+AI"></div></div>`,
+};
+
+// ════════════════════════════════════════════════════
+// PROMPTS
+// ════════════════════════════════════════════════════
+function g(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+
+const PROMPTS = {
+  testcase:()=>`You are a senior QA automation architect. Generate a complete, runnable ${g('f1')||'Playwright TypeScript'} test spec file.\n\nRequirement: ${g('f0')}\nApp: ${g('f2')||'Web'}\n\nStrict 3-layer architecture:\n- Pages layer: ONLY getter locators (no actions)\n- Modules layer: ONLY business logic (no locators)\n- Tests layer: ONLY describe/it blocks with assertions\n\nGenerate complete spec file with 4-5 test cases, TypeScript types, async/await, proper expect() assertions. Make it immediately runnable.`,
+  pageobj:()=>`Generate a complete TypeScript Page Object class for: ${g('f0')}\nFramework: ${g('f1')||'Playwright TypeScript'}\nElements: ${g('f2')||'standard page elements'}\n\nSTRICT RULE — PAGES LAYER:\n✅ Only getter properties that return locators\n✅ waitForReady() method\n✅ constructor receives page/driver\n❌ NO click(), setValue(), or ANY action\n❌ NO assertions or expect()\n❌ NO await inside getters\n\nGenerate complete TypeScript class with all locators and JSDoc comments.`,
+  xpath:()=>`Generate 5 ${g('f1')||'Playwright'} locator strategies for: "${g('f0')}"\n\nFor EACH strategy:\n1. The exact selector/locator\n2. Stability score (1-10)\n3. Why stable or fragile\n4. Complete TypeScript code example\n\nCover: Accessibility ID/role, resource-id/testId, text content, class/attribute combo, hierarchy/XPath.\nAlso write a self-healing helper TypeScript function that tries each in order.`,
+  apitest:()=>`Generate complete API test file for:\nEndpoint: ${g('f0')}\nMethod: ${g('f1')||'POST'}\nAuth: ${g('f2')||'Bearer token'}\nBody: ${g('f3')||'see requirement'}\n\nGenerate 5 tests:\n1. Success — valid data, assert 200/201 + response\n2. Validation error — invalid data, assert 400\n3. Auth failure — no token, assert 401\n4. Not found — wrong ID, assert 404\n5. Schema validation — check all fields\n\nFull TypeScript with interfaces for request/response.`,
+  testdata:()=>`Generate ${g('f0')||20} test records for: ${g('f2')}\nFormat: ${g('f1')||'All formats'}\n\nRequirements:\n- Mix of valid, edge case, and invalid records (label invalid clearly)\n- Include special characters, max length, min values as edge cases\n- Output: TypeScript interface + array, JSON array, CSV\n- Use Indian names and phone numbers where relevant`,
+  buganalyze:()=>`You are a Senior QA Architect. Analyze this test failure:\n\n${g('f0')}\n\nProvide:\n1. ROOT CAUSE (specific — file, line, selector, timing issue)\n2. CONFIDENCE LEVEL (0-100%)\n3. TOP 3 POSSIBLE REASONS (ranked by likelihood)\n4. EXACT FIX (show corrected code)\n5. PREVENTION (how to stop this recurring)\n\nBe direct and actionable.`,
+  rca:()=>`Create a professional Root Cause Analysis document:\n\nIncident: ${g('f0')}\n\nStructure:\n1. EXECUTIVE SUMMARY (2 sentences for management)\n2. TIMELINE (what happened when)\n3. ROOT CAUSE (technical + process)\n4. IMPACT (users, revenue, SLA)\n5. IMMEDIATE CONTAINMENT\n6. LONG-TERM PREVENTION (3+ specific actions with owners)\n7. LESSONS LEARNED\n\nProfessional format — Director-level presentation quality.`,
+  selfheal:()=>`Locator broke after UI change:\nBroken: ${g('f0')}\nPage: ${g('f1')||'Application page'}\nElement: ${g('f2')||'UI element'}\n\nProvide:\n1. WHY the original broke\n2. FIVE alternatives ranked by stability (score/10 + code each)\n3. TypeScript SelfHealingLocator utility class that tries each in order\n4. Playwright/Appium usage example`,
+  bdd:()=>`Generate complete BDD for:\nFeature: ${g('f0')}\nApp: ${g('f1')||'Web App'}\nScenarios: ${g('f2')||'happy path, error cases, edge cases'}\n\nGenerate:\n1. Complete .feature Gherkin file with Background, 5+ Scenarios, Scenario Outline with Examples table\n2. TypeScript step definitions skeleton with all steps mapped`,
+  jenkins:()=>`Generate production-ready Jenkins declarative pipeline (Jenkinsfile):\nProject: ${g('f0')}\nFramework: ${g('f1')||'Playwright TypeScript'}\nEnvironments: ${g('f2')||'dev, staging, production'}\n\nMust include: Docker agent, npm install, parallel execution per environment, Allure report publishing, Slack notification (pass+fail), artifact archiving, scheduled cron trigger, retry on failure, timeout handling, environment variables.`,
+  framework:()=>`Review and optimize QA framework:\nStack: ${g('f0')||'Playwright + TypeScript'}\nProblem: ${g('f1')||'general improvement'}\n${g('f2')?'Current code:\n'+g('f2'):''}\n\nProvide:\n1. Structural improvements with before/after folder structure\n2. Code pattern improvements with examples\n3. Performance optimizations\n4. Missing components to add\n5. Maintainability score /10 with explanation\n6. Top 5 specific code changes`,
+  reviewer:()=>`Review this automation script as QA Architect:\n\n${g('f0')}\n\nScore each /10: Naming, Assertions, Wait strategy, Locator quality, 3-layer compliance, Maintainability, Error handling, OVERALL.\n\nFor each issue: what is wrong + why + corrected code.\n\nAt the end: show the FULLY CORRECTED version of the entire script.`,
+  sql:()=>`Generate SQL test queries for: ${g('f0')}\nDatabase: ${g('f1')||'PostgreSQL'}\nTable: ${g('f2')||'users'}\nColumns: ${g('f3')||'standard columns'}\n\nGenerate with comments:\n1. SELECT verify query\n2. INSERT test data\n3. UPDATE query\n4. DELETE cleanup\n5. JOIN query (if applicable)\n6. TypeScript helper using these queries in a test file`,
+  interview:()=>`You are coaching Vaani Challa for a ${g('f1')||'Director'} level QA interview.\n\nHer background: ${g('f2')||'17 years, Samsung SRIB, 12-member team, Galaxy flagship releases, zero S1 escapes, Playwright + Appium expert'}\n\nQuestion: ${g('f0')}\n\nGenerate a POWERFUL, CONFIDENT director-level answer that:\n- Uses her specific numbers and achievements\n- Speaks in executive language (not engineer language)\n- Follows STAR format if behavioral\n- Quantifies impact with data\n- Ends with confidence and authority\n- Sounds natural when spoken aloud\n\nAlso show what NOT to say (weak version) for comparison.`,
+};
+
+// ════════════════════════════════════════════════════
+// GEMINI API CALL — NO CLAUDE, NO x-api-key
+// ════════════════════════════════════════════════════
+async function callGemini(prompt) {
+  if (!KEY) throw new Error('No API key set. Click "API Setup" in sidebar → get free Gemini key.');
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${KEY}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 2048, temperature: 0.3 }
+    })
+  });
+  const d = await res.json();
+  if (d.error) throw new Error('Gemini error: ' + d.error.message);
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from Gemini.';
+}
+
+// ════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════
+function goTo(name) {
+  ['dashboard','gen','chat','setup'].forEach(v => {
+    document.getElementById('v-'+v).style.display = v===name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.sb-item').forEach(e => e.classList.remove('on'));
+  const n = document.getElementById('nav-'+name);
+  if (n) n.classList.add('on');
+}
+
+function pick(id) {
+  if (id === 'chat') { goTo('chat'); return; }
+  FEAT = FEATS.find(f => f.id === id);
+  goTo('gen');
+  renderGen();
+  document.querySelectorAll('.fc').forEach(c => c.classList.remove('on'));
+  const c = document.getElementById('fc-'+id);
+  if (c) c.classList.add('on');
+}
+
+function renderGen() {
+  if (!FEAT) return;
+  document.getElementById('gen-area').innerHTML = `
+    <div class="panel">
+      <div class="ph">
+        <i class="ti ${FEAT.i}" style="font-size:17px;color:${FEAT.c}"></i>
+        <h3>${FEAT.n}</h3>
+        <span class="tbadge tbadge-green">Gemini Free</span>
+        <button class="btn btn-g btn-sm" onclick="goTo('dashboard')" style="margin-left:auto"><i class="ti ti-arrow-left"></i>Back</button>
+      </div>
+      <div class="pb">
+        ${FORMS[FEAT.id] || '<p style="color:var(--t3)">Form not available</p>'}
+        <button class="btn btn-c" onclick="runGenerate()" id="gen-btn" style="margin-top:6px">
+          <i class="ti ti-sparkles"></i>Generate with Gemini (Free)
+        </button>
+        <div id="gen-out"></div>
+      </div>
+    </div>`;
+}
+
+async function runGenerate() {
+  if (!FEAT) return;
+  const btn = document.getElementById('gen-btn');
+  const out = document.getElementById('gen-out');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div>Generating...';
+  out.innerHTML = `<div class="ld"><div class="spin"></div>Gemini is generating ${FEAT.n.toLowerCase()}...</div>`;
+  try {
+    const prompt = PROMPTS[FEAT.id]();
+    const result = await callGemini(prompt);
+    out.innerHTML = `
+      <div class="out-sec">
+        <div class="out-hdr">
+          <div class="out-lbl"><span class="dot"></span>${FEAT.n} — Generated</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-g btn-xs" onclick="cpOut()"><i class="ti ti-copy"></i>Copy</button>
+            <button class="btn btn-g btn-xs" onclick="dlOut()"><i class="ti ti-download"></i>Download .ts</button>
+          </div>
+        </div>
+        <div class="code" id="out-txt">${esc(result)}</div>
+      </div>`;
+  } catch(e) {
+    out.innerHTML = `
+      <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:14px;margin-top:10px;font-size:12px;color:#fca5a5">
+        <strong>Error:</strong> ${esc(e.message)}<br><br>
+        ${e.message.includes('API key')||e.message.includes('No API') ? '<strong style="color:#fbbf24">→ Go to "API Setup" in sidebar to get your free Gemini key.</strong>' : ''}
+        ${e.message.includes('API_KEY_INVALID') ? '<strong style="color:#fbbf24">→ Your Gemini key is invalid. Get a new one from aistudio.google.com</strong>' : ''}
+      </div>`;
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-sparkles"></i>Generate with Gemini (Free)';
+}
+
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function cpOut(){const e=document.getElementById('out-txt');if(e){navigator.clipboard.writeText(e.innerText);toast('Copied!')}}
+function dlOut(){const e=document.getElementById('out-txt');if(!e)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([e.innerText],{type:'text/plain'}));a.download=(FEAT?.id||'output')+'_generated.ts';a.click();toast('Downloaded!')}
+
+// ════════════════════════════════════════════════════
+// CHAT
+// ════════════════════════════════════════════════════
+async function sendChat() {
+  const inp = document.getElementById('chat-inp');
+  const msg = inp.value.trim(); if (!msg) return;
+  inp.value = '';
+  addBubble('u', msg);
+  const tid = 't'+Date.now();
+  addBubble('a', '<div class="pulse"><span></span><span></span><span></span></div>', tid);
+  try {
+    const prompt = `You are an expert QA automation architect with 17+ years in Playwright, Appium, Selenium, API testing, CI/CD, and QA leadership. Answer this practically with code examples where helpful:\n\n${msg}`;
+    const r = await callGemini(prompt);
+    document.getElementById(tid).innerText = r;
+  } catch(e) {
+    document.getElementById(tid).innerText = 'Error: '+e.message+(e.message.includes('No API')||e.message.includes('API key') ? '\n\n→ Go to API Setup in sidebar.' : '');
+  }
+  document.getElementById('chat-msgs').scrollTop = 99999;
+}
+function qc(t){document.getElementById('chat-inp').value=t;sendChat();}
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
+function addBubble(cls, html, id) {
+  const d = document.createElement('div');
+  d.className = 'bubble '+cls;
+  if (id) d.id = id;
+  d.innerHTML = html;
+  document.getElementById('chat-msgs').appendChild(d);
+  document.getElementById('chat-msgs').scrollTop = 99999;
+}
+
+// ════════════════════════════════════════════════════
+// API SETUP — GEMINI ONLY, NO x-api-key
+// ════════════════════════════════════════════════════
+async function testAndSave() {
+  const key = document.getElementById('key-input').value.trim();
+  const res = document.getElementById('test-result');
+  if (!key) { alert('Please paste your Gemini API key first'); return; }
+  res.style.display = 'block';
+  res.className = 'test-result';
+  res.innerHTML = '<div class="spin" style="display:inline-block;margin-right:6px"></div>Testing key...';
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${key}`;
+    const r = await fetch(url, {
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({contents:[{parts:[{text:'Say: API key works!'}]}],generationConfig:{maxOutputTokens:20}})
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message);
+    KEY = key;
+    localStorage.setItem('gemini_key', key);
+    res.className = 'test-result test-ok';
+    res.innerHTML = '✅ Key works! Gemini connected. All 14 features are now active!';
+    updateStatus();
+    toast('✅ Gemini API connected — All features active!');
+    document.getElementById('key-input').value = '';
+  } catch(e) {
+    res.className = 'test-result test-fail';
+    res.innerHTML = '❌ '+e.message+' — Check your key at aistudio.google.com';
+  }
+}
+
+function removeKey() {
+  KEY = '';
+  localStorage.removeItem('gemini_key');
+  updateStatus();
+  toast('Key removed');
+}
+
+function updateStatus() {
+  const badge = document.getElementById('status-badge');
+  const box = document.getElementById('key-saved-box');
+  if (KEY) {
+    badge.textContent = '✅ Gemini Free — Active';
+    badge.style.background = 'rgba(16,185,129,.15)';
+    badge.style.color = '#10b981';
+    if (box) {
+      box.style.display = 'block';
+      document.getElementById('key-preview').textContent = KEY.slice(0,8)+'...'+KEY.slice(-4);
+    }
+  } else {
+    badge.textContent = 'No key — click API Setup';
+    badge.style.background = 'rgba(239,68,68,.15)';
+    badge.style.color = '#ef4444';
+    if (box) box.style.display = 'none';
+  }
+}
+
+// ════════════════════════════════════════════════════
+// RENDER FEAT GRID + INIT
+// ════════════════════════════════════════════════════
+function toast(msg) {
+  const t = document.createElement('div'); t.className = 'toast';
+  t.innerHTML = `<i class="ti ti-check"></i>${msg}`;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 3000);
+}
+
+document.getElementById('feat-grid').innerHTML = FEATS.map(f=>`
+  <div class="fc" id="fc-${f.id}" onclick="pick('${f.id}')">
+    <i class="ti ${f.i}" style="color:${f.c}"></i>
+    <h4>${f.n}</h4><p>${f.d}</p>
+  </div>`).join('');
+
+if (KEY) {
+  updateStatus();
+  document.getElementById('key-input').value = KEY;
+}
+</script>
+</body>
+</html>
