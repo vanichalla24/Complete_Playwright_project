@@ -1,33 +1,15 @@
-# 🔧 Setup Guide — QA AI Tool
+# 🔧 Setup Guide
 
-## Prerequisites
+## Get Free Gemini API Key
 
-- Any modern browser (Chrome, Edge, Firefox)
-- Gmail account (for free Gemini API key)
-- No Node.js, no npm, no installation required
-
----
-
-## Getting Your Free Gemini API Key
-
-### Step 1 — Go to Google AI Studio
-Open: https://aistudio.google.com/app/apikey
-
-### Step 2 — Sign In
-Sign in with your Gmail/Google account (completely free).
-
-### Step 3 — Create API Key
-Click the blue **"Create API Key"** button.
-Select **"Create API key in new project"**.
-
-### Step 4 — Copy the Key
-Your key will look like: `AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXX`
-Copy it immediately (you won't see it again).
-
-### Step 5 — Enter in Tool
-Open `index.html` → Click **"API Setup"** → Paste key → Click **"Test & Save"**.
-
----
+| Step | Action |
+|------|--------|
+| 1 | Open → [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) |
+| 2 | Sign in with your Gmail account (free) |
+| 3 | Click **"Create API Key"** |
+| 4 | Select **"Create API key in new project"** |
+| 5 | Copy the key — starts with `AIzaSy...` |
+| 6 | In the tool → **API Setup** → paste → **Test & Save** |
 
 ## Free Tier Limits
 
@@ -35,54 +17,33 @@ Open `index.html` → Click **"API Setup"** → Paste key → Click **"Test & Sa
 |-------|-------|
 | Requests per minute | 60 |
 | Requests per day | 1,500 |
-| Tokens per minute | 1,000,000 |
-| Cost | $0 |
+| Cost | **$0** |
 
-These limits are more than enough for daily QA work.
+## Running the Tool
 
----
-
-## Running Locally
-
-### Option A — Double Click (Simplest)
-Just double-click `index.html`. Works on Windows, Mac, Linux.
-
-### Option B — Local Server (Recommended)
 ```bash
-# Using npx serve
+# Option 1 — Just double-click index.html
+
+# Option 2 — Local server
 npx serve .
+# Open: http://localhost:3000
 
-# Using Python
+# Option 3 — Python
 python3 -m http.server 8080
-
-# Using Node.js
-node -e "require('http').createServer((q,r)=>{require('fs').readFile('./index.html',(e,d)=>{r.end(d)})}).listen(8080)"
+# Open: http://localhost:8080
 ```
-
-### Option C — VS Code Live Server
-Install the Live Server extension → Right-click `index.html` → Open with Live Server.
-
----
-
-## Security Notes
-
-- Your API key is stored ONLY in `localStorage` of your browser
-- It is never sent to any server other than `generativelanguage.googleapis.com`
-- You can remove it anytime from the API Setup page
-- Never share your API key in screenshots or public repos
-
----
 
 ## Troubleshooting
 
-### "API_KEY_INVALID" error
-→ Your key is wrong or expired. Go to aistudio.google.com and create a new key.
+| Error | Fix |
+|-------|-----|
+| `API_KEY_INVALID` | Generate a new key at aistudio.google.com |
+| `QUOTA_EXCEEDED` | Wait 60 seconds — free tier is 60 req/min |
+| Tool not loading | Check internet connection |
+| Features not working | Re-enter key in API Setup and click Test & Save |
 
-### "QUOTA_EXCEEDED" error
-→ You have hit the 60 requests/minute limit. Wait 60 seconds and retry.
+## Security
 
-### Tool not loading
-→ Make sure you have internet connection (needed for Gemini API calls and icon fonts).
-
-### Features not generating
-→ Check you clicked "Test & Save" in API Setup and saw the green tick.
+- Key stored only in browser `localStorage`
+- Never sent anywhere except `generativelanguage.googleapis.com`
+- Remove anytime from API Setup page
